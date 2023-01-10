@@ -48,7 +48,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES ('a234','0001','s003',120000.00,'1082310654','2022-02-01','2005-06-16'),('a235','0002','s002',550000.00,'2051271952','2022-02-24','2007-06-04'),('e239','0002','s003',30000.00,'4152179632','2022-07-19','2011-03-10');
+INSERT INTO `account` VALUES ('a234','0001','s003',10020000.00,'1082310654','2022-02-01','2005-06-16'),('a235','0002','s002',-9350000.00,'2051271952','2022-02-24','2007-06-04'),('e239','0002','s003',30000.00,'4152179632','2022-07-19','2011-03-10'),('a235','0002','s002',550000.00,'7082310654','2022-02-24','2007-06-04');
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -130,7 +130,7 @@ CREATE TABLE `branch` (
 
 LOCK TABLES `branch` WRITE;
 /*!40000 ALTER TABLE `branch` DISABLE KEYS */;
-INSERT INTO `branch` VALUES ('0001','New York',12300,'2327,Patterson Road,New York','2100'),('0002','Florida',2000,'2343,Powder House Road,Florida','2200'),('0003','Houston',3200,'404,Grey Fox Farm Road,Houston','2300');
+INSERT INTO `branch` VALUES ('0000','Online',23411,NULL,NULL),('0001','New York',12300,'2327,Patterson Road,New York','2100'),('0002','Florida',2000,'2343,Powder House Road,Florida','2200'),('0003','Houston',3200,'404,Grey Fox Farm Road,Houston','2300');
 /*!40000 ALTER TABLE `branch` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -284,7 +284,6 @@ CREATE TABLE `loan` (
   `amount` float(12,2) DEFAULT NULL,
   `loan_type_id` char(4) DEFAULT NULL,
   `loan_duration` int DEFAULT NULL,
-  `interest_rate` float(4,2) DEFAULT NULL,
   `start_date` date DEFAULT NULL,
   `due_date` date DEFAULT NULL,
   `is_personal` tinyint(1) DEFAULT NULL,
@@ -305,7 +304,7 @@ CREATE TABLE `loan` (
 
 LOCK TABLES `loan` WRITE;
 /*!40000 ALTER TABLE `loan` DISABLE KEYS */;
-INSERT INTO `loan` VALUES ('214587452','0002',300000.00,'0001',6,12.00,'2022-11-20','2023-05-20',1,0,NULL,NULL),('236545652','0003',5000000.00,'0004',12,22.45,'2022-12-19','2024-12-19',0,0,NULL,NULL),('236548789','0001',400000.00,'0001',24,12.00,'2022-08-05','2024-11-24',1,1,NULL,NULL),('254845758','0002',200000.00,'0002',12,15.00,'2022-11-24','2023-11-24',1,0,NULL,NULL),('254897526','0002',1000000.00,'0005',60,21.00,'2021-05-20','2026-05-20',1,1,NULL,NULL),('256548852','0003',350000.00,'0000',12,12.50,'2022-11-10','2023-11-10',1,1,NULL,NULL);
+INSERT INTO `loan` VALUES ('214587452','0002',300000.00,'0001',6,'2022-11-20','2023-05-20',1,0,NULL,NULL),('236545652','0003',5000000.00,'0004',12,'2022-12-19','2024-12-19',0,0,NULL,NULL),('236548789','0001',400000.00,'0001',24,'2022-08-05','2024-11-24',1,1,NULL,NULL),('254845758','0002',200000.00,'0002',12,'2022-11-24','2023-11-24',1,0,NULL,NULL),('254897526','0002',1000000.00,'0005',60,'2021-05-20','2026-05-20',1,1,NULL,NULL),('256548852','0003',350000.00,'0000',12,'2022-11-10','2023-11-10',1,1,NULL,NULL);
 /*!40000 ALTER TABLE `loan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -421,7 +420,7 @@ CREATE TABLE `transaction` (
 
 LOCK TABLES `transaction` WRITE;
 /*!40000 ALTER TABLE `transaction` DISABLE KEYS */;
-INSERT INTO `transaction` VALUES ('3456','1082310654','paying house rent',3000.00,'0002','2015-03-05 07:04:00',NULL),('7762','2051271952','paying car rent',550000.00,'0003','2022-02-24 17:53:43',NULL);
+INSERT INTO `transaction` VALUES ('3456','1082310654','paying house rent',3000.00,'0002','2015-03-05 07:04:00',NULL),('7762','2051271952','paying car rent',550000.00,'0003','2022-02-24 17:53:43','1082310654');
 /*!40000 ALTER TABLE `transaction` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -436,9 +435,13 @@ CREATE TABLE `users` (
   `user` char(4) NOT NULL,
   `password` varchar(255) DEFAULT NULL,
   `role` varchar(15) DEFAULT NULL,
+  `customer_id` char(4) DEFAULT NULL,
+  `employee_id` char(4) DEFAULT NULL,
   PRIMARY KEY (`user`),
-  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`user`) REFERENCES `customer` (`customer_id`),
-  CONSTRAINT `users_ibfk_2` FOREIGN KEY (`user`) REFERENCES `employee` (`employee_id`)
+  KEY `employee_id` (`employee_id`),
+  KEY `customer_id` (`customer_id`),
+  CONSTRAINT `users_ibfk_2` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`employee_id`),
+  CONSTRAINT `users_ibfk_3` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -448,7 +451,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('a234','123',NULL);
+INSERT INTO `users` VALUES ('a234','123','customer',NULL,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -461,4 +464,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-09 21:22:30
+-- Dump completed on 2023-01-10 19:14:52
