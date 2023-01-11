@@ -48,7 +48,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES ('a234','0001','s003',10020000.00,'1082310654','2022-02-01','2005-06-16'),('a235','0002','s002',-9350000.00,'2051271952','2022-02-24','2007-06-04'),('e239','0002','s003',30000.00,'4152179632','2022-07-19','2011-03-10'),('a235','0002','s002',550000.00,'7082310654','2022-02-24','2007-06-04');
+INSERT INTO `account` VALUES ('a234','0001','s003',12220000.00,'1082310654','2022-02-01','2005-06-16'),('a235','0002','s002',-11550000.00,'2051271952','2022-02-24','2007-06-04'),('e239','0002','f003',30000.00,'4152179632','2022-07-19','2011-03-10'),('a235','0002','s002',550000.00,'7082310654','2022-02-24','2007-06-04'),('a235','0002','s002',550000.00,'7092310654','2022-02-24','2007-06-04');
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -240,7 +240,7 @@ CREATE TABLE `employee` (
 
 LOCK TABLES `employee` WRITE;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-INSERT INTO `employee` VALUES ('2100','0001','Lyric Mueller'),('2200','0002','Dereon Lam'),('2300','0003','Trace Lawrence'),('2342','0002','Joslyn Nichols'),('3453','0001','Lincoln Levy'),('3958','0001','David Reyes'),('5434','0001','Eduard Anahid'),('6353','0002','Maria Wyatt'),('6543','0003','Edith Solomon');
+INSERT INTO `employee` VALUES ('0002','0002','0002'),('2100','0001','Lyric Mueller'),('2200','0002','Dereon Lam'),('2300','0003','Trace Lawrence'),('2342','0002','Joslyn Nichols'),('3453','0001','Lincoln Levy'),('3958','0001','David Reyes'),('5434','0001','Eduard Anahid'),('6353','0002','Maria Wyatt'),('6543','0003','Edith Solomon');
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -290,6 +290,7 @@ CREATE TABLE `loan` (
   `is_online` tinyint(1) DEFAULT NULL,
   `loan_status` tinyint(1) DEFAULT NULL,
   `is_approved` tinyint(1) DEFAULT NULL,
+  `request_date` date DEFAULT NULL,
   PRIMARY KEY (`loan_number`),
   KEY `BranchCODE` (`branch_code`),
   KEY `loan_type_id` (`loan_type_id`),
@@ -304,7 +305,7 @@ CREATE TABLE `loan` (
 
 LOCK TABLES `loan` WRITE;
 /*!40000 ALTER TABLE `loan` DISABLE KEYS */;
-INSERT INTO `loan` VALUES ('214587452','0002',300000.00,'0001',6,'2022-11-20','2023-05-20',1,0,NULL,NULL),('236545652','0003',5000000.00,'0004',12,'2022-12-19','2024-12-19',0,0,NULL,NULL),('236548789','0001',400000.00,'0001',24,'2022-08-05','2024-11-24',1,1,NULL,NULL),('254845758','0002',200000.00,'0002',12,'2022-11-24','2023-11-24',1,0,NULL,NULL),('254897526','0002',1000000.00,'0005',60,'2021-05-20','2026-05-20',1,1,NULL,NULL),('256548852','0003',350000.00,'0000',12,'2022-11-10','2023-11-10',1,1,NULL,NULL);
+INSERT INTO `loan` VALUES ('108231064','0002',550000.00,'0002',6,'2022-02-24','2007-06-04',1,1,0,1,NULL),('1082310654','0002',550000.00,'0002',6,'2022-02-24','2007-06-04',1,1,0,1,NULL),('214587452','0002',300000.00,'0001',6,'2022-11-20','2023-05-20',1,0,NULL,1,NULL),('236545652','0003',5000000.00,'0004',12,'2022-12-19','2024-12-19',0,0,NULL,1,NULL),('236548789','0001',400000.00,'0001',24,'2023-01-11','2024-11-24',1,1,NULL,1,NULL),('254845758','0002',200000.00,'0002',12,'2022-11-24','2023-11-24',1,0,NULL,NULL,NULL),('254897526','0002',1000000.00,'0005',60,'2021-05-20','2026-05-20',1,1,NULL,NULL,NULL),('256548852','0003',350000.00,'0000',12,'2022-11-10','2023-11-10',1,1,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `loan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -316,11 +317,11 @@ DROP TABLE IF EXISTS `loan_account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `loan_account` (
-  `account_number` char(1) NOT NULL,
+  `account_number` char(10) NOT NULL,
   `loan_number` varchar(12) NOT NULL,
   PRIMARY KEY (`account_number`,`loan_number`),
   KEY `loan_number` (`loan_number`),
-  CONSTRAINT `loan_account_ibfk_2` FOREIGN KEY (`account_number`) REFERENCES `account` (`account_number`)
+  CONSTRAINT `loan_account_ibfk_1` FOREIGN KEY (`account_number`) REFERENCES `account` (`account_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -330,6 +331,7 @@ CREATE TABLE `loan_account` (
 
 LOCK TABLES `loan_account` WRITE;
 /*!40000 ALTER TABLE `loan_account` DISABLE KEYS */;
+INSERT INTO `loan_account` VALUES ('1082310654','254897526'),('1082310654','256548852');
 /*!40000 ALTER TABLE `loan_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -420,7 +422,7 @@ CREATE TABLE `transaction` (
 
 LOCK TABLES `transaction` WRITE;
 /*!40000 ALTER TABLE `transaction` DISABLE KEYS */;
-INSERT INTO `transaction` VALUES ('3456','1082310654','paying house rent',3000.00,'0002','2015-03-05 07:04:00',NULL),('7762','2051271952','paying car rent',550000.00,'0003','2022-02-24 17:53:43','1082310654');
+INSERT INTO `transaction` VALUES ('3332','2051271952','paying car rent',550000.00,'0003','2022-02-24 17:53:43','1082310654'),('3456','1082310654','paying house rent',3000.00,'0002','2015-03-05 07:04:00',NULL),('7332','2051271952','paying car rent',550000.00,'0001','2022-02-24 17:53:43','1082310654'),('7342','2051271952','paying car rent',550000.00,'0001','2022-02-24 17:53:43','1082310654'),('7752','2051271952','paying car rent',550000.00,'0003','2022-02-24 17:53:43','1082310654'),('7762','2051271952','paying car rent',550000.00,'0003','2022-02-24 17:53:43','1082310654');
 /*!40000 ALTER TABLE `transaction` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -451,7 +453,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('a234','123','customer',NULL,NULL);
+INSERT INTO `users` VALUES ('a234','123','customer',NULL,NULL),('u123','123','admin',NULL,'2100');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -464,4 +466,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-10 19:14:52
+-- Dump completed on 2023-01-11 20:23:29
