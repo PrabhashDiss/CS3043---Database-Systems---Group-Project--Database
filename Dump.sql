@@ -32,10 +32,13 @@ CREATE TABLE `account` (
   `account_number` char(10) NOT NULL,
   `last_active_date` date DEFAULT NULL,
   `open_date` date DEFAULT NULL,
+  `is_active` tinyint(1) DEFAULT '1',
+  `is_personal` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`account_number`),
   KEY `CustomerID` (`customer_id`),
   KEY `BranchCODE` (`branch_code`),
   KEY `acc_type` (`account_type_id`),
+  KEY `account_index` (`account_number`),
   CONSTRAINT `account_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`),
   CONSTRAINT `account_ibfk_2` FOREIGN KEY (`branch_code`) REFERENCES `branch` (`branch_code`),
   CONSTRAINT `account_ibfk_3` FOREIGN KEY (`account_type_id`) REFERENCES `account_type` (`account_type_id`)
@@ -48,7 +51,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES ('a234','0001','s003',12220030.00,'1082310654','2022-02-01','2005-06-16'),('a235','0002','s002',500000000.00,'2051271952','2022-02-24','2007-06-04'),('a234','0002','f003',580030.00,'4152179632','2022-07-19','2011-03-10'),('a235','0002','s002',550031.00,'7082310654','2022-02-24','2007-06-04'),('a235','0002','s002',55003000.00,'7092310654','2022-02-24','2007-06-04'),('a235','0002','s002',550000.00,'7094310654','2022-02-24','2007-06-04'),('a235','0002','s002',550000.00,'7094316654','2022-02-24','2007-06-04');
+INSERT INTO `account` VALUES ('a234','0001','s003',12220030.00,'1082310654','2022-02-01','2005-06-16',1,1),('a235','0002','s002',500000000.00,'2051271952','2022-02-24','2007-06-04',1,1),('a234','0002','f003',580030.00,'4152179632','2022-07-19','2011-03-10',1,1),('a235','0002','s002',550031.00,'7082310654','2022-02-24','2007-06-04',1,1),('a235','0002','s002',55003000.00,'7092310654','2022-02-24','2007-06-04',1,1),('a235','0002','s002',550000.00,'7094310654','2022-02-24','2007-06-04',1,1),('a235','0002','s002',550000.00,'7094316654','2022-02-24','2007-06-04',1,1);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -201,7 +204,8 @@ CREATE TABLE `customer` (
   `customer_street` varchar(256) DEFAULT NULL,
   `gender` char(1) DEFAULT NULL,
   `address` varchar(256) DEFAULT NULL,
-  PRIMARY KEY (`customer_id`)
+  PRIMARY KEY (`customer_id`),
+  KEY `customer_index` (`customer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -211,7 +215,7 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES ('a234','Angelica Jefferson','North Chicago','Oak Avenue','f','4377, Oak Avenue, North Chicago.'),('a235','Vivek Reyes','Chicago','Jadewood Drive','m','2932, Jadewood Drive, Chicago.'),('b236','Jerry Lim','Middletown','Marshville Road','m','3809, Marshville Road, Middletown.'),('c237','Brenda Morrison','Indianapolis','Stewart Street','f','1849, Stewart Street, Indianapolis.'),('d238','Theodore Kirk','Camp Hill','Aaron Smith Drive','m','2012, Aaron Smith Drive, Camp Hill.'),('e239','Techlia ','Quincy','Ferguson Street','f','3663, Ferguson Street, Quincy.'),('e240','Synergy','Woodland','Chardonnay Drive','f','1379, Chardonnay Drive, Woodland.'),('f242','Odyssy Tech','Pottsville','Coal Road','f','932, Coal Road, Pottsville.'),('q243','Veritas Tech','Spokane Valley','Melrose Street','f','3869, Melrose Street, Spokane Valley.'),('s241','Alliance','Manteo','Green Acres Road','f','1954, Green Acres Road, Manteo.');
+INSERT INTO `customer` VALUES ('a234','Angelica Jefferson','North Chicago','Oak Avenue','f','4377, Oak Avenue, North Chicago.'),('a235','Vivek Reyes','Chicago','Jadewood Drive','m','2932, Jadewood Drive, Chicago.'),('b236','Jerry Lim','Middletown','Marshville Road','m','3809, Marshville Road, Middletown.'),('c237','Brenda Morrison','Indianapolis','Stewart Street','f','1849, Stewart Street, Indianapolis.'),('d238','Theodore Kirk','Camp Hill','Aaron Smith Drive','m','2012, Aaron Smith Drive, Camp Hill.'),('e239','Techlia ','Quincy','Ferguson Street','f','3663, Ferguson Street, Quincy.'),('e240','Synergy','Woodland','Chardonnay Drive','f','1379, Chardonnay Drive, Woodland.'),('e323','SANDEV','Gampaha','Coal Road','m','1954, Green Acres Road, Manteo.'),('f242','Odyssy Tech','Pottsville','Coal Road','f','932, Coal Road, Pottsville.'),('q243','Veritas Tech','Spokane Valley','Melrose Street','f','3869, Melrose Street, Spokane Valley.'),('s241','Alliance','Manteo','Green Acres Road','f','1954, Green Acres Road, Manteo.');
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -493,4 +497,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-13 14:33:07
+-- Dump completed on 2023-01-13 16:17:46
